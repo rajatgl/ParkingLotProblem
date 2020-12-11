@@ -9,4 +9,10 @@ class ParkingLotTest extends FunSuite {
     val isParked = parkingLot.park(new Vehicle)
     assert(isParked == true)
   }
+  test("givenAVehicleWhenUnParkedShouldReturnTrue"){
+    val parkingLot = new ParkingLot()
+    parkingLot.park(new Vehicle)
+    val isUnParked = parkingLot.unPark(0)
+    assert(isUnParked == true)
+  }
 }
