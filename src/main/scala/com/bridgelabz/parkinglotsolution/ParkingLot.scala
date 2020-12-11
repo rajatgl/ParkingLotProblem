@@ -40,7 +40,7 @@ class ParkingLot {
         if (parkingLot(parkingSpot) == null) {
           parkingLot(parkingSpot) = vehicle
           currentlyParked += 1
-          println("Vehicle parked at Spot Number:"+parkingSpot)
+          println("Parked at ParkingSpot Number:"+parkingSpot)
           return true
         }
       }
