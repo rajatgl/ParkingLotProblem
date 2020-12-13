@@ -1,6 +1,8 @@
 package com.bridgelabz.parkinglotsolution
 
+import java.text.SimpleDateFormat
 import java.util
+import java.util.Date
 
 import com.bridgelabz.parkinglotsolution.design.{Message, Observer, Subject}
 import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingAttendant, ParkingLotOwner}
@@ -52,6 +54,7 @@ class ParkingLot extends Subject {
       }
       parkingLot(parkingOwnerChoice) = driver
       currentlyParked += 1
+      ParkingLotOwner.update(new Message("Vehicle: " +driver.vehicle.getNumberPlate()+" arrived at: " + new SimpleDateFormat("dd MMM yy, HH:mm:ss").format(new Date(driver.vehicle.getArrivalTime()))))
       driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingOwnerChoice))
       isFull
       true
@@ -60,6 +63,7 @@ class ParkingLot extends Subject {
       for (parkingSpot <- 0 until parkingLotSize) {
         if (parkingLot(parkingSpot) == null) {
           parkingLot(parkingSpot) = driver
+          ParkingLotOwner.update(new Message("Vehicle: " +driver.vehicle.getNumberPlate()+" arrived at: " + new SimpleDateFormat("dd MMM yy, HH:mm:ss").format(new Date(driver.vehicle.getArrivalTime()))))
           currentlyParked += 1
           driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingSpot))
           isFull
@@ -88,7 +92,7 @@ class ParkingLot extends Subject {
 
   def depart(numberPlate: String): Boolean = {
     for(driverIndex <- 0 until parkingLotSize){
-      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.numberPlate().equals(numberPlate)){
+      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getNumberPlate().equals(numberPlate)){
         parkingLot(driverIndex).update(new Message("Vehicle Departed successfully from Parking Spot Number: " + driverIndex))
         parkingLot(driverIndex) = null
         currentlyParked -= 1
