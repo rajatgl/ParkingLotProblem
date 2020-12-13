@@ -1,15 +1,21 @@
 package com.bridgelabz.parkinglotsolution
 
+import java.util
+
+import com.bridgelabz.parkinglotsolution.design.{Message, Observer, Subject}
+
 /**
  * Created on 12/9/2020.
  * Class: ParkingLot.scala
  * Author: Rajat G.L.
  */
-class ParkingLot {
+class ParkingLot extends Subject {
 
   var parkingLotSize: Int = 100
-  var parkingLot: Array[Vehicle] = Array.ofDim[Vehicle](parkingLotSize)
+  var parkingLot: Array[Driver] = Array.ofDim[Driver](parkingLotSize)
   private var currentlyParked: Int = 0
+  private val observers = new util.ArrayList[Observer]
+
   def ParkingLot(): Unit = {
     init
   }
@@ -32,16 +38,17 @@ class ParkingLot {
    *
    * @return false if cannot park (or lot is full) or return true if parked
    */
-  def park(vehicle: Vehicle): Boolean = {
-    if (currentlyParked == parkingLotSize) {
+  def park(driver: Driver): Boolean = {
+    if (isFull) {
+      driver.update(new Message("Parking lot is full."))
       false
     }
     else {
       for (parkingSpot <- 0 until parkingLotSize) {
         if (parkingLot(parkingSpot) == null) {
-          parkingLot(parkingSpot) = vehicle
+          parkingLot(parkingSpot) = driver
           currentlyParked += 1
-          println("Parked at ParkingSpot Number: " + parkingSpot)
+          driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingSpot))
           return true
         }
       }
@@ -49,18 +56,40 @@ class ParkingLot {
     }
   }
 
-  def unPark(parkingSpot: Int): Boolean = {
-    if(parkingLot(parkingSpot) == null) {
-      println("No Vehicle Found")
+  def depart(parkingSpot: Int): Boolean = {
+    if (parkingLot(parkingSpot) == null) {
       return false
     }
-    if(parkingLot(parkingSpot)!=null)
-    {
+    if (parkingLot(parkingSpot) != null) {
+      parkingLot(parkingSpot).update(new Message("Vehicle Departed successfully from Parking Spot Number: " + parkingSpot))
       parkingLot(parkingSpot) = null
-      println("Vehicle UnParked")
+      currentlyParked -= 1
       return true
     }
     false
   }
 
+  def isFull: Boolean = {
+    if (currentlyParked == parkingLotSize) {
+      ParkingLotOwner.update(new Message("Parking lot is full."))
+      true
+    }
+    else
+      false
+  }
+
+
+  override def attach(observer: Observer): Unit = {
+    observers.add(observer)
+  }
+
+  override def detach(observer: Observer): Unit = {
+    observers.remove(observer)
+  }
+
+  override def notifyUpdate(message: Message): Unit = {
+    for (index <- 0 until observers.size()) {
+      observers.get(index).update(message)
+    }
+  }
 }

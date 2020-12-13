@@ -1,18 +1,25 @@
 package com.bridgelabz.parkinglottest
 
-import com.bridgelabz.parkinglotsolution.{ParkingLot, Vehicle}
+import com.bridgelabz.parkinglotsolution.{Driver, ParkingLot, ParkingLotOwner, Vehicle}
 import org.scalatest.FunSuite
 
 class ParkingLotTest extends FunSuite {
-  test("givenAVehicleWhenParkedShouldReturnTrue"){
+  //UC1
+  test("givenAVehicleWhenParkedShouldReturnTrue") {
     val parkingLot = new ParkingLot()
-    val isParked = parkingLot.park(new Vehicle)
-    assert(isParked == true)
+    assert(parkingLot.park(new Driver))
   }
-  test("givenAVehicleWhenUnParkedShouldReturnTrue"){
+  //UC2
+  test("givenAVehicleWhenUnParkedShouldReturnTrue") {
     val parkingLot = new ParkingLot()
-    parkingLot.park(new Vehicle)
-    val isUnParked = parkingLot.unPark(0)
-    assert(isUnParked == true)
+    parkingLot.park(new Driver)
+    assert(parkingLot.depart(0))
   }
+  //UC3
+  test("givenWhenParkingLotIsFullShouldInformOwner") {
+    val parkingLot = new ParkingLot
+    parkingLot.parkingLotSize = 0
+    assert(parkingLot.isFull)
+  }
+
 }
