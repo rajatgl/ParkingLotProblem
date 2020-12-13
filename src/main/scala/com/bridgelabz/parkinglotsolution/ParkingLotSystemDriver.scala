@@ -22,14 +22,13 @@ object ParkingLotSystemDriver extends App {
     choice match {
       case 1 =>
         val driver = new ParkingAttendant()
-        driver.vehicle = new Vehicle()
+        driver.setVehicle()
         lot.attach(driver)
         lot.park(driver)
 
       case 2 =>
-        print("Enter the assigned ParkingSpot Number: ")
-        var parkingSpot: Int = scala.io.StdIn.readInt()
-        lot.depart(parkingSpot)
+        print("Enter your vehicle's number plate: ")
+        lot.depart(scala.io.StdIn.readLine().toUpperCase())
 
       case 3 =>
         running = false

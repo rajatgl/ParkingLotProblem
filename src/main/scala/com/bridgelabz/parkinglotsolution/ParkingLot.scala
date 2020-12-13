@@ -86,6 +86,18 @@ class ParkingLot extends Subject {
     false
   }
 
+  def depart(numberPlate: String): Boolean = {
+    for(driverIndex <- 0 until parkingLotSize){
+      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.numberPlate().equals(numberPlate)){
+        parkingLot(driverIndex).update(new Message("Vehicle Departed successfully from Parking Spot Number: " + driverIndex))
+        parkingLot(driverIndex) = null
+        currentlyParked -= 1
+        return true
+      }
+    }
+    false
+  }
+
   def isFull: Boolean = {
     if (currentlyParked == parkingLotSize) {
       notifyUpdate(new Message("Parking lot is full. Put the sign."), classOf[ParkingLotOwner.type].toString)
