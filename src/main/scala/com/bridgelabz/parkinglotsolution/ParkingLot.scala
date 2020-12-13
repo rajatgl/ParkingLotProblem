@@ -3,7 +3,7 @@ package com.bridgelabz.parkinglotsolution
 import java.util
 
 import com.bridgelabz.parkinglotsolution.design.{Message, Observer, Subject}
-import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingLotOwner}
+import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingAttendant, ParkingLotOwner}
 
 /**
  * Created on 12/9/2020.
@@ -43,6 +43,18 @@ class ParkingLot extends Subject {
     if (isFull) {
       driver.update(new Message("Parking lot is full."))
       false
+    }
+    else if (driver.getClass.toString.equals(classOf[ParkingAttendant].toString)) {
+      var parkingOwnerChoice = ParkingLotOwner.getOpinionOnParkingSpot
+      while (parkingLot(parkingOwnerChoice) != null || parkingOwnerChoice <= -1 || parkingOwnerChoice >= parkingLotSize) {
+        println("Spots available from 0 to " + (parkingLotSize - 1) + ". In case you followed this, the parking space may be full. Try again.")
+        parkingOwnerChoice = ParkingLotOwner.getOpinionOnParkingSpot
+      }
+      parkingLot(parkingOwnerChoice) = driver
+      currentlyParked += 1
+      driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingOwnerChoice))
+      isFull
+      true
     }
     else {
       for (parkingSpot <- 0 until parkingLotSize) {

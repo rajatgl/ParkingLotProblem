@@ -8,6 +8,13 @@ import com.bridgelabz.parkinglotsolution.design.{Message, Observer}
  * Author: Rajat G.L.
  */
 object ParkingLotOwner extends Observer {
+
+  def getOpinionOnParkingSpot: Int = {
+
+    println("Hey Sanjay! Where would you want the Parking Attendant to park?")
+    scala.io.StdIn.readInt()
+  }
+
   override def update(message: Message): Unit = {
     println(message.getMessageContent)
   }

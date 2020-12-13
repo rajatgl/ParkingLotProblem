@@ -1,6 +1,6 @@
 package com.bridgelabz.parkinglotsolution
 
-import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingLotOwner}
+import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingAttendant, ParkingLotOwner}
 
 
 /**
@@ -21,7 +21,7 @@ object ParkingLotSystemDriver extends App {
     var choice: Int = scala.io.StdIn.readInt()
     choice match {
       case 1 =>
-        val driver = new Driver
+        val driver = new ParkingAttendant()
         driver.vehicle = new Vehicle()
         lot.attach(driver)
         lot.park(driver)
