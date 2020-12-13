@@ -3,6 +3,7 @@ package com.bridgelabz.parkinglotsolution
 import java.util
 
 import com.bridgelabz.parkinglotsolution.design.{Message, Observer, Subject}
+import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingLotOwner}
 
 /**
  * Created on 12/9/2020.
@@ -49,6 +50,7 @@ class ParkingLot extends Subject {
           parkingLot(parkingSpot) = driver
           currentlyParked += 1
           driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingSpot))
+          isFull
           return true
         }
       }
@@ -61,6 +63,9 @@ class ParkingLot extends Subject {
       return false
     }
     if (parkingLot(parkingSpot) != null) {
+      if (currentlyParked == parkingLotSize) {
+        notifyUpdate(new Message("Parking lot has space again, pull in the sign."), classOf[ParkingLotOwner.type].toString)
+      }
       parkingLot(parkingSpot).update(new Message("Vehicle Departed successfully from Parking Spot Number: " + parkingSpot))
       parkingLot(parkingSpot) = null
       currentlyParked -= 1

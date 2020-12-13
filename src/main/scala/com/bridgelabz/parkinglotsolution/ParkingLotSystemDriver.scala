@@ -1,5 +1,7 @@
 package com.bridgelabz.parkinglotsolution
 
+import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingLotOwner}
+
 
 /**
  * Created on 12/9/2020.

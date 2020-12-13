@@ -1,5 +1,6 @@
-package com.bridgelabz.parkinglotsolution
+package com.bridgelabz.parkinglotsolution.observers
 
+import com.bridgelabz.parkinglotsolution.Vehicle
 import com.bridgelabz.parkinglotsolution.design.{Message, Observer}
 
 class Driver extends Observer {

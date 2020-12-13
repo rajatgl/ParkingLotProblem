@@ -1,6 +1,7 @@
 package com.bridgelabz.parkinglottest
 
-import com.bridgelabz.parkinglotsolution.{Driver, ParkingLot, ParkingLotOwner, Vehicle}
+import com.bridgelabz.parkinglotsolution.observers.Driver
+import com.bridgelabz.parkinglotsolution.{ParkingLot, Vehicle}
 import org.scalatest.FunSuite
 
 class ParkingLotTest extends FunSuite {

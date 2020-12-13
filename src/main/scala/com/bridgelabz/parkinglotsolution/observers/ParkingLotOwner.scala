@@ -1,4 +1,4 @@
-package com.bridgelabz.parkinglotsolution
+package com.bridgelabz.parkinglotsolution.observers
 
 import com.bridgelabz.parkinglotsolution.design.{Message, Observer}
 
@@ -7,7 +7,7 @@ import com.bridgelabz.parkinglotsolution.design.{Message, Observer}
  * Class: ParkingLotOwner.scala
  * Author: Rajat G.L.
  */
-object ParkingLotOwner extends Observer{
+object ParkingLotOwner extends Observer {
   override def update(message: Message): Unit = {
     println(message.getMessageContent)
   }

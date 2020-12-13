@@ -1,4 +1,4 @@
-package com.bridgelabz.parkinglotsolution
+package com.bridgelabz.parkinglotsolution.observers
 
 import com.bridgelabz.parkinglotsolution.design.{Message, Observer}
 
