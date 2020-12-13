@@ -71,13 +71,13 @@ class ParkingLot extends Subject {
 
   def isFull: Boolean = {
     if (currentlyParked == parkingLotSize) {
-      ParkingLotOwner.update(new Message("Parking lot is full."))
+      notifyUpdate(new Message("Parking lot is full. Put the sign."), classOf[ParkingLotOwner.type].toString)
+      notifyUpdate(new Message("Attention: Parking lot is full. Call Security!"), classOf[AirportPersonal].toString)
       true
     }
     else
       false
   }
-
 
   override def attach(observer: Observer): Unit = {
     observers.add(observer)
@@ -90,6 +90,13 @@ class ParkingLot extends Subject {
   override def notifyUpdate(message: Message): Unit = {
     for (index <- 0 until observers.size()) {
       observers.get(index).update(message)
+    }
+  }
+
+  override def notifyUpdate(message: Message, classType: String): Unit = {
+    for (index <- 0 until observers.size()) {
+      if (observers.get(index).getClass.toString.equals(classType))
+        observers.get(index).update(message)
     }
   }
 }

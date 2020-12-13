@@ -11,6 +11,8 @@ object ParkingLotSystemDriver extends App {
   var lot: ParkingLot = new ParkingLot()
   var running: Boolean = true
   lot.attach(ParkingLotOwner)
+  lot.attach(new AirportPersonal)
+  lot.parkingLotSize = 3
 
   while (running) {
     println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to Quit")

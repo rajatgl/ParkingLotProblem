@@ -8,4 +8,5 @@ trait Subject {
 
   def notifyUpdate(message: Message): Unit
 
+  def notifyUpdate(message: Message, classType: String): Unit
 }

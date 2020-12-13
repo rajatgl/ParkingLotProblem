@@ -22,4 +22,11 @@ class ParkingLotTest extends FunSuite {
     assert(parkingLot.isFull)
   }
 
+  //UC4
+  test("givenWHenParkingLotIsFullShouldInformAirportPersonal"){
+    val parkingLot = new ParkingLot
+    parkingLot.parkingLotSize = 0
+    assert(parkingLot.isFull)
+  }
+
 }
