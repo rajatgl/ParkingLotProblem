@@ -11,13 +11,13 @@ class Driver extends Observer {
 
   var vehicle: Vehicle = null
 
-  def setVehicle(): Unit = {
+  def setVehicle(isLarge: Boolean = false): Unit = {
     var running: Boolean = true
     while (running) {
       print("Enter the number plate of the vehicle: ")
       val numberPlate = scala.io.StdIn.readLine().toUpperCase()
       if (numberPlate != "") {
-        vehicle = new Vehicle(numberPlate, new Date().getTime)
+        vehicle = new Vehicle(numberPlate, new Date().getTime, isLarge)
         running = false
       } else {
         println("Invalid Input")

@@ -24,8 +24,13 @@ object ParkingLotSystemDriver extends App {
       choice match {
         case 1 =>
           val driver = new ParkingAttendant()
-          driver.setVehicle()
-          println("Hi! Are you handicap? Press Y for yes, anything else for no.")
+          println("Is the vehicle large? Press Y for yes, anything else for no.")
+          if(scala.io.StdIn.readChar() == 'Y')
+            driver.setVehicle(isLarge = true)
+          else
+            driver.setVehicle()
+
+          println("Are you handicap? Press Y for yes, anything else for no.")
           if(scala.io.StdIn.readChar() == 'Y')
             ParkingLotManager.handicappedPark(driver)
           else
