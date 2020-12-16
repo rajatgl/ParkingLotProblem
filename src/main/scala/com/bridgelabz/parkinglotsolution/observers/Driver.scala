@@ -5,19 +5,17 @@ import java.util.Date
 import com.bridgelabz.parkinglotsolution.Vehicle
 import com.bridgelabz.parkinglotsolution.design.{Message, Observer}
 
-import scala.util.matching.Regex
-
 class Driver extends Observer {
 
   var vehicle: Vehicle = null
 
-  def setVehicle(isLarge: Boolean = false): Unit = {
+  def setVehicle(color: String, isLarge: Boolean = false): Unit = {
     var running: Boolean = true
     while (running) {
       print("Enter the number plate of the vehicle: ")
       val numberPlate = scala.io.StdIn.readLine().toUpperCase()
       if (numberPlate != "") {
-        vehicle = new Vehicle(numberPlate, new Date().getTime, isLarge)
+        vehicle = new Vehicle(numberPlate, new Date().getTime, isLarge, color)
         running = false
       } else {
         println("Invalid Input")
@@ -27,6 +25,6 @@ class Driver extends Observer {
   }
 
   override def update(message: Message): Unit = {
-    println(message.getMessageContent)
+    println("Driver with vehicle " + vehicle.getNumberPlate() + ": " + message.getMessageContent)
   }
 }

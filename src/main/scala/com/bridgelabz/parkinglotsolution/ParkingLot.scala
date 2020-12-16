@@ -121,6 +121,16 @@ class ParkingLot extends Subject {
       false
   }
 
+  def getAllWhiteCars(): util.ArrayList[Int] = {
+    val list: util.ArrayList[Int] = new util.ArrayList[Int]()
+    for(driverIndex <- 0 until parkingLotSize){
+      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getColor().toLowerCase().equals("white")){
+        list.add(driverIndex)
+      }
+    }
+    list
+  }
+
   override def attach(observer: Observer): Unit = {
     observers.add(observer)
   }

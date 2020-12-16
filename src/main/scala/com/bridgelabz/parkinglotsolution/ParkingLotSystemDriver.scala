@@ -1,11 +1,6 @@
 package com.bridgelabz.parkinglotsolution
 
-import java.util
-
-import com.bridgelabz.parkinglotsolution.exception.ParkingLotException
 import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingAttendant, ParkingLotOwner}
-import jdk.nashorn.api.tree.ArrayLiteralTree
-
 
 /**
  * Created on 12/9/2020.
@@ -15,20 +10,32 @@ import jdk.nashorn.api.tree.ArrayLiteralTree
 object ParkingLotSystemDriver extends App {
 
   var running: Boolean = true
-  ParkingLotManager.addParkingLot()
-  ParkingLotManager.addParkingLot()
+  println("Hey Sanjay! How many parking lots do you own?")
+  var errorLess: Boolean = false
+  while(!errorLess) {
+    try {
+      ParkingLotManager.addParkingLot(scala.io.StdIn.readInt())
+      errorLess = true
+    }
+    catch{
+      case _:Exception =>
+        println("Hey Sanjay! We hit an error. How many parking lots do you own?")
+    }
+  }
   try {
     while (running) {
-      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to Quit")
+      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to Quit")
       var choice: Int = scala.io.StdIn.readInt()
       choice match {
         case 1 =>
           val driver = new ParkingAttendant()
+          print("Enter the color of the vehicle: ")
+          val color = scala.io.StdIn.readLine()
           println("Is the vehicle large? Press Y for yes, anything else for no.")
           if(scala.io.StdIn.readChar() == 'Y')
-            driver.setVehicle(isLarge = true)
+            driver.setVehicle(color, isLarge = true)
           else
-            driver.setVehicle()
+            driver.setVehicle(color)
 
           println("Are you handicap? Press Y for yes, anything else for no.")
           if(scala.io.StdIn.readChar() == 'Y')
@@ -44,10 +51,13 @@ object ParkingLotSystemDriver extends App {
           ParkingLotManager.depart(numberPlate, parkingLotNumber)
 
         case 3 =>
+          ParkingLotManager.getAllWhiteCars()
+
+        case 4 =>
           running = false
+
         case _ =>
           println("Invalid choice")
-          running = true
       }
     }
   } catch {

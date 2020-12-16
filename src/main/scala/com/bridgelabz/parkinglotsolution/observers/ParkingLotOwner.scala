@@ -15,6 +15,6 @@ object ParkingLotOwner extends Observer {
   }
 
   override def update(message: Message): Unit = {
-    println(message.getMessageContent)
+    println("Parking Lot Owner: " + message.getMessageContent)
   }
 }

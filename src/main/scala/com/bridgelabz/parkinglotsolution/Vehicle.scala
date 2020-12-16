@@ -4,7 +4,7 @@ package com.bridgelabz.parkinglotsolution
  * Vehicle class to generate Vehicle objects
  */
 
-class Vehicle(numberPlate: String, arrivalTime: Long, isLarge: Boolean ) {
+class Vehicle(numberPlate: String, arrivalTime: Long, isLarge: Boolean, color: String ) {
   def getNumberPlate(): String = {
     numberPlate
   }
@@ -13,5 +13,8 @@ class Vehicle(numberPlate: String, arrivalTime: Long, isLarge: Boolean ) {
   }
   def getIsLarge(): Boolean ={
     isLarge
+  }
+  def getColor(): String = {
+    color
   }
 }
