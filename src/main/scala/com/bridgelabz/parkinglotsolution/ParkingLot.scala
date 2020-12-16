@@ -42,12 +42,12 @@ class ParkingLot extends Subject {
    *
    * @return false if cannot park (or lot is full) or return true if parked
    */
-  def park(driver: Driver): Boolean = {
+  def park(driver: Driver, isHandicap: Boolean = false): Boolean = {
     if (isFull) {
       driver.update(new Message("Parking lot is full."))
       false
     }
-    else if (driver.getClass.toString.equals(classOf[ParkingAttendant].toString)) {
+    else if (!isHandicap && driver.getClass.toString.equals(classOf[ParkingAttendant].toString)) {
       var parkingOwnerChoice = ParkingLotOwner.getOpinionOnParkingSpot
       while (parkingOwnerChoice <= -1 || parkingOwnerChoice >= parkingLotSize || parkingLot(parkingOwnerChoice) != null) {
         println("Spots available from 0 to " + (parkingLotSize - 1) + ". In case you followed this, the parking space may be full. Try again.")
@@ -66,13 +66,21 @@ class ParkingLot extends Subject {
           parkingLot(parkingSpot) = driver
           ParkingLotOwner.update(new Message("Vehicle: " +driver.vehicle.getNumberPlate()+" arrived at: " + new SimpleDateFormat("dd MMM yy, HH:mm:ss").format(new Date(driver.vehicle.getArrivalTime()))))
           currentlyParked += 1
-          driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingSpot))
+          driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingSpot  + ", Parking Lot Number: " + index))
           isFull
           return true
         }
       }
       false
     }
+  }
+
+  def nearestFreeParkingSpot(): Int = {
+    for(driverIndex <- 0 until parkingLotSize){
+      if(parkingLot(driverIndex) == null)
+        return driverIndex
+    }
+    parkingLotSize
   }
 
   def depart(parkingSpot: Int): Boolean = {

@@ -18,6 +18,7 @@ object ParkingLotManager {
     parkingLot.attach(new AirportPersonal)
     parkingLots.add(parkingLot)
   }
+
   def park(driver: Driver): Unit ={
     var minOccupancy = parkingLots.get(0).getCurrentlyParked
     var parkingLotIndex: Int = 0
@@ -32,7 +33,22 @@ object ParkingLotManager {
     parkingLots.get(parkingLotIndex).park(driver)
     parkingLots.get(parkingLotIndex).attach(driver)
   }
-  
+
+  def handicappedPark(driver: Driver): Unit = {
+    var minOccupancy = parkingLots.get(0).nearestFreeParkingSpot()
+    var parkingLotIndex: Int = 0
+    for(parkingLotsIndex<-0 until parkingLots.size()) {
+      {
+        if(parkingLots.get(parkingLotsIndex).nearestFreeParkingSpot() < minOccupancy){
+          minOccupancy = parkingLots.get(parkingLotsIndex).nearestFreeParkingSpot()
+          parkingLotIndex = parkingLotsIndex
+        }
+      }
+    }
+    parkingLots.get(parkingLotIndex).park(driver, isHandicap = true)
+    parkingLots.get(parkingLotIndex).attach(driver)
+  }
+
   def depart(numberPlate: String, parkingLotIndex: Int): Unit ={
     parkingLots.get(parkingLotIndex).depart(numberPlate)
   }
