@@ -1,6 +1,10 @@
 package com.bridgelabz.parkinglotsolution
 
+import java.util
+
+import com.bridgelabz.parkinglotsolution.exception.ParkingLotException
 import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingAttendant, ParkingLotOwner}
+import jdk.nashorn.api.tree.ArrayLiteralTree
 
 
 /**
@@ -10,28 +14,35 @@ import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, Par
  */
 object ParkingLotSystemDriver extends App {
 
-  var lot: ParkingLot = new ParkingLot()
   var running: Boolean = true
-  lot.attach(ParkingLotOwner)
-  lot.attach(new AirportPersonal)
-  lot.parkingLotSize = 3
+  ParkingLotManager.addParkingLot()
+  ParkingLotManager.addParkingLot()
+  try {
+    while (running) {
+      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to Quit")
+      var choice: Int = scala.io.StdIn.readInt()
+      choice match {
+        case 1 =>
+          val driver = new ParkingAttendant()
+          driver.setVehicle()
+          ParkingLotManager.park(driver)
 
-  while (running) {
-    println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to Quit")
-    var choice: Int = scala.io.StdIn.readInt()
-    choice match {
-      case 1 =>
-        val driver = new ParkingAttendant()
-        driver.setVehicle()
-        lot.attach(driver)
-        lot.park(driver)
+        case 2 =>
+          print("Enter your vehicle's number plate: ")
+          val numberPlate = scala.io.StdIn.readLine().toUpperCase()
+          print("Enter Lot Number: ")
+          val parkingLotNumber = scala.io.StdIn.readInt()
+          ParkingLotManager.depart(numberPlate, parkingLotNumber)
 
-      case 2 =>
-        print("Enter your vehicle's number plate: ")
-        lot.depart(scala.io.StdIn.readLine().toUpperCase())
-
-      case 3 =>
-        running = false
+        case 3 =>
+          running = false
+        case _ =>
+          println("Invalid choice")
+          running = true
+      }
     }
+  } catch {
+    case e: NumberFormatException => println("Invalid Input")
   }
 }
+

@@ -18,6 +18,7 @@ class ParkingLot extends Subject {
   var parkingLot: Array[Driver] = Array.ofDim[Driver](parkingLotSize)
   private var currentlyParked: Int = 0
   private val observers = new util.ArrayList[Observer]
+  var index: Int = 0
 
   def ParkingLot(): Unit = {
     init
@@ -48,14 +49,14 @@ class ParkingLot extends Subject {
     }
     else if (driver.getClass.toString.equals(classOf[ParkingAttendant].toString)) {
       var parkingOwnerChoice = ParkingLotOwner.getOpinionOnParkingSpot
-      while (parkingLot(parkingOwnerChoice) != null || parkingOwnerChoice <= -1 || parkingOwnerChoice >= parkingLotSize) {
+      while (parkingOwnerChoice <= -1 || parkingOwnerChoice >= parkingLotSize || parkingLot(parkingOwnerChoice) != null) {
         println("Spots available from 0 to " + (parkingLotSize - 1) + ". In case you followed this, the parking space may be full. Try again.")
         parkingOwnerChoice = ParkingLotOwner.getOpinionOnParkingSpot
       }
       parkingLot(parkingOwnerChoice) = driver
       currentlyParked += 1
       ParkingLotOwner.update(new Message("Vehicle: " +driver.vehicle.getNumberPlate()+" arrived at: " + new SimpleDateFormat("dd MMM yy, HH:mm:ss").format(new Date(driver.vehicle.getArrivalTime()))))
-      driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingOwnerChoice))
+      driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingOwnerChoice + ", Parking Lot Number: " + index ))
       isFull
       true
     }
