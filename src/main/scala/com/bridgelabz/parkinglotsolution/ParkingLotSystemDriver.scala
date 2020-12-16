@@ -24,8 +24,8 @@ object ParkingLotSystemDriver extends App {
   }
   try {
     while (running) {
-      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to get details of all Blue Toyotas\n5. to get details of all BMWs\n5. to Quit")
-      var choice: Int = scala.io.StdIn.readInt()
+      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to get details of all Blue Toyotas\n5. to get details of all BMWs\n6. to get details of all cars parking within 30 seconds\n7. to Quit")
+      val choice: Int = scala.io.StdIn.readInt()
       choice match {
         case 1 =>
           print("Enter the name of the parking attendant: ")
@@ -63,6 +63,9 @@ object ParkingLotSystemDriver extends App {
           ParkingLotManager.getAllCarsWithMake("BMW")
 
         case 6 =>
+          ParkingLotManager.getAllCars(30)
+
+        case 7 =>
           running = false
 
         case _ =>

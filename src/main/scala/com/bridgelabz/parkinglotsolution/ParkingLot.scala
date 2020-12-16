@@ -131,6 +131,16 @@ class ParkingLot extends Subject {
     list
   }
 
+  def getAllCars(seconds: Int): util.ArrayList[Int] = {
+    val list: util.ArrayList[Int] = new util.ArrayList[Int]()
+    for (driverIndex <- 0 until parkingLotSize) {
+      if (parkingLot(driverIndex) != null && ((new Date().getTime/1000) - (parkingLot(driverIndex).vehicle.getArrivalTime()/1000)) <= seconds) {
+        list.add(driverIndex)
+      }
+    }
+    list
+  }
+
   def getAllCarsWithMake(make: String): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
     for (driverIndex <- 0 until parkingLotSize) {

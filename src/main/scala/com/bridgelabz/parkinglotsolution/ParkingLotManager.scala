@@ -89,25 +89,16 @@ object ParkingLotManager {
       listOfList.add(parkingLots.get(parkingLotIndex).getAllCars(color, make))
     }
 
-    var message = ""
-    for (parkingLotNumber <- 0 until listOfList.size()) {
-      message += "Parking Lot Number " + parkingLotNumber + ": {"
-      for (parkingLotSpot <- 0 until listOfList.get(parkingLotNumber).size()) {
-        message += "Vehicle: {"
-        val driver: Driver = parkingLots.get(parkingLotNumber).parkingLot(parkingLotSpot)
-        message += "Number Plate: " + driver.vehicle.getNumberPlate() + ", "
-        message += "PA Name: " + driver.getName() + ", "
-        message += "Location: " + parkingLotSpot
+    PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+  }
 
-        if (parkingLotSpot != listOfList.get(parkingLotNumber).size() - 1)
-          message += "}, "
-        else
-          message += "}"
-      }
-      message += "}, "
+  def getAllCars(seconds: Int): Unit = {
+    val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
+    for (parkingLotIndex <- 0 until parkingLots.size()) {
+      listOfList.add(parkingLots.get(parkingLotIndex).getAllCars(seconds))
     }
-    message = message.substring(0, message.length - 2)
-    PoliceDepartment.update(new Message(message))
+
+    PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
   }
 
   def getAllCarsWithMake(make: String): Unit = {
@@ -116,6 +107,11 @@ object ParkingLotManager {
       listOfList.add(parkingLots.get(parkingLotIndex).getAllCarsWithMake(make))
     }
 
+    PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+  }
+
+  def getParkingAllotment(listOfList: util.ArrayList[util.ArrayList[Int]]): String = {
+
     var message = ""
     for (parkingLotNumber <- 0 until listOfList.size()) {
       message += "Parking Lot Number " + parkingLotNumber + ": {"
@@ -134,6 +130,6 @@ object ParkingLotManager {
       message += "}, "
     }
     message = message.substring(0, message.length - 2)
-    PoliceDepartment.update(new Message(message))
+    message
   }
 }
