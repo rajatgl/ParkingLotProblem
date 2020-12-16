@@ -110,6 +110,15 @@ object ParkingLotManager {
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
   }
 
+  def getAllHandicapCars(isLarge: Boolean): Unit = {
+    val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
+    for (parkingLotIndex <- 0 until parkingLots.size()) {
+      listOfList.add(parkingLots.get(parkingLotIndex).getAllHandicapCars(isLarge))
+    }
+
+    PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+  }
+
   def getParkingAllotment(listOfList: util.ArrayList[util.ArrayList[Int]]): String = {
 
     var message = ""

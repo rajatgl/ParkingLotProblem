@@ -161,6 +161,16 @@ class ParkingLot extends Subject {
     list
   }
 
+  def getAllHandicapCars(isLarge: Boolean = false): util.ArrayList[Int] = {
+    val list: util.ArrayList[Int] = new util.ArrayList[Int]()
+    for (driverIndex <- 0 until parkingLotSize) {
+      if (parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getIsLarge().equals(isLarge) && parkingLot(driverIndex).vehicle.getIsHandicap()) {
+        list.add(driverIndex)
+      }
+    }
+    list
+  }
+
   override def attach(observer: Observer): Unit = {
     observers.add(observer)
   }

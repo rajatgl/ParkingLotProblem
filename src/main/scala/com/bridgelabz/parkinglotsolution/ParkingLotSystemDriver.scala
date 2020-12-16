@@ -24,7 +24,7 @@ object ParkingLotSystemDriver extends App {
   }
   try {
     while (running) {
-      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to get details of all Blue Toyotas\n5. to get details of all BMWs\n6. to get details of all cars parking within 30 seconds\n7. to Quit")
+      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to get details of all Blue Toyotas\n5. to get details of all BMWs\n6. to get details of all cars parking within 30 seconds\n7. to get details of all handicap small cars\n8. to Quit")
       val choice: Int = scala.io.StdIn.readInt()
       choice match {
         case 1 =>
@@ -35,16 +35,16 @@ object ParkingLotSystemDriver extends App {
           print("Enter the make of the car: ")
           val make = scala.io.StdIn.readLine().trim
           println("Is the vehicle large? Press Y for yes, anything else for no.")
-          if (scala.io.StdIn.readChar() == 'Y')
-            driver.setVehicle(color, make, isLarge = true)
-          else
-            driver.setVehicle(color, make)
+          val isLarge = (scala.io.StdIn.readChar() == 'Y')
 
           println("Are you handicap? Press Y for yes, anything else for no.")
-          if (scala.io.StdIn.readChar() == 'Y')
+          if (scala.io.StdIn.readChar() == 'Y') {
+            driver.setVehicle(color, make, isHandicap = true, isLarge = isLarge)
             ParkingLotManager.handicappedPark(driver)
-          else
+          } else {
+            driver.setVehicle(color, make, isLarge = isLarge)
             ParkingLotManager.park(driver)
+          }
 
         case 2 =>
           print("Enter your vehicle's number plate: ")
@@ -66,6 +66,9 @@ object ParkingLotSystemDriver extends App {
           ParkingLotManager.getAllCars(30)
 
         case 7 =>
+          ParkingLotManager.getAllHandicapCars(false)
+          
+        case 8 =>
           running = false
 
         case _ =>
