@@ -8,12 +8,12 @@ class ParkingLotTest extends FunSuite {
   //UC1
   test("givenAVehicleWhenParkedShouldReturnTrue") {
     val parkingLot = new ParkingLot()
-    assert(parkingLot.park(new Driver))
+    assert(parkingLot.park(new Driver("Rajat")))
   }
   //UC2
   test("givenAVehicleWhenUnParkedShouldReturnTrue") {
     val parkingLot = new ParkingLot()
-    parkingLot.park(new Driver)
+    parkingLot.park(new Driver("Rajat"))
     assert(parkingLot.depart(0))
   }
   //UC3

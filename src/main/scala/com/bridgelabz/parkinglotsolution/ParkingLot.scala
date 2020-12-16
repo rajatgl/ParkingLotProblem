@@ -121,10 +121,20 @@ class ParkingLot extends Subject {
       false
   }
 
-  def getAllWhiteCars(): util.ArrayList[Int] = {
+  def getAllCars(color: String): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
     for(driverIndex <- 0 until parkingLotSize){
-      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getColor().toLowerCase().equals("white")){
+      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getColor().toLowerCase().equals(color)){
+        list.add(driverIndex)
+      }
+    }
+    list
+  }
+
+  def getAllCars(color: String, make: String): util.ArrayList[Int] = {
+    val list: util.ArrayList[Int] = new util.ArrayList[Int]()
+    for(driverIndex <- 0 until parkingLotSize){
+      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getColor().toLowerCase().equals(color.toLowerCase()) && parkingLot(driverIndex).vehicle.getMake().toLowerCase().equals(make.toLowerCase())){
         list.add(driverIndex)
       }
     }

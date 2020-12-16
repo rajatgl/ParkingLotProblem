@@ -24,18 +24,21 @@ object ParkingLotSystemDriver extends App {
   }
   try {
     while (running) {
-      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to Quit")
+      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to get details of all Blue Toyotas\n5. to Quit")
       var choice: Int = scala.io.StdIn.readInt()
       choice match {
         case 1 =>
-          val driver = new ParkingAttendant()
+          print("Enter the name of the parking attendant: ")
+          val driver = new ParkingAttendant(scala.io.StdIn.readLine())
           print("Enter the color of the vehicle: ")
-          val color = scala.io.StdIn.readLine()
+          val color = scala.io.StdIn.readLine().trim
+          print("Enter the make of the car: ")
+          val make = scala.io.StdIn.readLine().trim
           println("Is the vehicle large? Press Y for yes, anything else for no.")
           if(scala.io.StdIn.readChar() == 'Y')
-            driver.setVehicle(color, isLarge = true)
+            driver.setVehicle(color, make, isLarge = true)
           else
-            driver.setVehicle(color)
+            driver.setVehicle(color, make)
 
           println("Are you handicap? Press Y for yes, anything else for no.")
           if(scala.io.StdIn.readChar() == 'Y')
@@ -51,9 +54,12 @@ object ParkingLotSystemDriver extends App {
           ParkingLotManager.depart(numberPlate, parkingLotNumber)
 
         case 3 =>
-          ParkingLotManager.getAllWhiteCars()
+          ParkingLotManager.getAllCars("White")
 
         case 4 =>
+          ParkingLotManager.getAllCars("Blue", "Toyota")
+
+        case 5 =>
           running = false
 
         case _ =>
