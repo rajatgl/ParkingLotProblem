@@ -22,9 +22,10 @@ object ParkingLotSystemDriver extends App {
         println("Hey Sanjay! We hit an error. How many parking lots do you own?")
     }
   }
-  try {
-    while (running) {
-      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to get details of all Blue Toyotas\n5. to get details of all BMWs\n6. to get details of all cars parking within 30 seconds\n7. to get details of all handicap small cars\n8. to Quit")
+
+  while (running) {
+    try {
+      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to get details of all Blue Toyotas\n5. to get details of all BMWs\n6. to get details of all cars parking within 30 seconds\n7. to get details of all handicap small cars\n8. to get details of all cars\n9. to Quit")
       val choice: Int = scala.io.StdIn.readInt()
       choice match {
         case 1 =>
@@ -67,16 +68,20 @@ object ParkingLotSystemDriver extends App {
 
         case 7 =>
           ParkingLotManager.getAllHandicapCars(false)
-          
+
         case 8 =>
+          ParkingLotManager.getAllCars()
+
+        case 9 =>
           running = false
 
         case _ =>
           println("Invalid choice")
       }
     }
-  } catch {
-    case e: NumberFormatException => println("Invalid Input")
+    catch {
+      case e: NumberFormatException => println("Invalid Input")
+    }
   }
 }
 

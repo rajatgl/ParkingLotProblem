@@ -83,6 +83,15 @@ object ParkingLotManager {
     PoliceDepartment.update(new Message(message))
   }
 
+  def getAllCars(): Unit = {
+    val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
+    for (parkingLotIndex <- 0 until parkingLots.size()) {
+      listOfList.add(parkingLots.get(parkingLotIndex).getAllCars())
+    }
+
+    PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+  }
+
   def getAllCars(color: String, make: String): Unit = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
@@ -123,20 +132,20 @@ object ParkingLotManager {
 
     var message = ""
     for (parkingLotNumber <- 0 until listOfList.size()) {
-      message += "Parking Lot Number " + parkingLotNumber + ": {"
+      message += "\nParking Lot Number " + parkingLotNumber + ": {\n"
       for (parkingLotSpot <- 0 until listOfList.get(parkingLotNumber).size()) {
-        message += "Vehicle: {"
+        message += "\tVehicle: {"
         val driver: Driver = parkingLots.get(parkingLotNumber).parkingLot(parkingLotSpot)
-        message += "Number Plate: " + driver.vehicle.getNumberPlate() + ", "
-        message += "PA Name: " + driver.getName() + ", "
-        message += "Location: " + parkingLotSpot
+        message += "\n\t\tNumber Plate: " + driver.vehicle.getNumberPlate() + ", "
+        message += "\n\t\tPA Name: " + driver.getName() + ", "
+        message += "\n\t\tLocation: " + parkingLotSpot
 
         if (parkingLotSpot != listOfList.get(parkingLotNumber).size() - 1)
-          message += "}, "
+          message += "\n\t},\n"
         else
-          message += "}"
+          message += "}\n"
       }
-      message += "}, "
+      message += "},\n"
     }
     message = message.substring(0, message.length - 2)
     message
