@@ -55,8 +55,8 @@ class ParkingLot extends Subject {
       }
       parkingLot(parkingOwnerChoice) = driver
       currentlyParked += 1
-      ParkingLotOwner.update(new Message("Vehicle: " +driver.vehicle.getNumberPlate()+" arrived at: " + new SimpleDateFormat("dd MMM yy, HH:mm:ss").format(new Date(driver.vehicle.getArrivalTime()))))
-      driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingOwnerChoice + ", Parking Lot Number: " + index ))
+      ParkingLotOwner.update(new Message("Vehicle: " + driver.vehicle.getNumberPlate() + " arrived at: " + new SimpleDateFormat("dd MMM yy, HH:mm:ss").format(new Date(driver.vehicle.getArrivalTime()))))
+      driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingOwnerChoice + ", Parking Lot Number: " + index))
       isFull
       true
     }
@@ -64,9 +64,9 @@ class ParkingLot extends Subject {
       for (parkingSpot <- 0 until parkingLotSize) {
         if (parkingLot(parkingSpot) == null) {
           parkingLot(parkingSpot) = driver
-          ParkingLotOwner.update(new Message("Vehicle: " +driver.vehicle.getNumberPlate()+" arrived at: " + new SimpleDateFormat("dd MMM yy, HH:mm:ss").format(new Date(driver.vehicle.getArrivalTime()))))
+          ParkingLotOwner.update(new Message("Vehicle: " + driver.vehicle.getNumberPlate() + " arrived at: " + new SimpleDateFormat("dd MMM yy, HH:mm:ss").format(new Date(driver.vehicle.getArrivalTime()))))
           currentlyParked += 1
-          driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingSpot  + ", Parking Lot Number: " + index))
+          driver.update(new Message("Vehicle successfully parked at Spot Number : " + parkingSpot + ", Parking Lot Number: " + index))
           isFull
           return true
         }
@@ -76,8 +76,8 @@ class ParkingLot extends Subject {
   }
 
   def nearestFreeParkingSpot(): Int = {
-    for(driverIndex <- 0 until parkingLotSize){
-      if(parkingLot(driverIndex) == null)
+    for (driverIndex <- 0 until parkingLotSize) {
+      if (parkingLot(driverIndex) == null)
         return driverIndex
     }
     parkingLotSize
@@ -100,8 +100,8 @@ class ParkingLot extends Subject {
   }
 
   def depart(numberPlate: String): Boolean = {
-    for(driverIndex <- 0 until parkingLotSize){
-      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getNumberPlate().equals(numberPlate)){
+    for (driverIndex <- 0 until parkingLotSize) {
+      if (parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getNumberPlate().equals(numberPlate)) {
         parkingLot(driverIndex).update(new Message("Vehicle Departed successfully from Parking Spot Number: " + driverIndex))
         parkingLot(driverIndex) = null
         currentlyParked -= 1
@@ -123,8 +123,18 @@ class ParkingLot extends Subject {
 
   def getAllCars(color: String): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
-    for(driverIndex <- 0 until parkingLotSize){
-      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getColor().toLowerCase().equals(color)){
+    for (driverIndex <- 0 until parkingLotSize) {
+      if (parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getColor().toLowerCase().equals(color.toLowerCase())) {
+        list.add(driverIndex)
+      }
+    }
+    list
+  }
+
+  def getAllCarsWithMake(make: String): util.ArrayList[Int] = {
+    val list: util.ArrayList[Int] = new util.ArrayList[Int]()
+    for (driverIndex <- 0 until parkingLotSize) {
+      if (parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getMake().toLowerCase().equals(make.toLowerCase())) {
         list.add(driverIndex)
       }
     }
@@ -133,8 +143,8 @@ class ParkingLot extends Subject {
 
   def getAllCars(color: String, make: String): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
-    for(driverIndex <- 0 until parkingLotSize){
-      if(parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getColor().toLowerCase().equals(color.toLowerCase()) && parkingLot(driverIndex).vehicle.getMake().toLowerCase().equals(make.toLowerCase())){
+    for (driverIndex <- 0 until parkingLotSize) {
+      if (parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getColor().toLowerCase().equals(color.toLowerCase()) && parkingLot(driverIndex).vehicle.getMake().toLowerCase().equals(make.toLowerCase())) {
         list.add(driverIndex)
       }
     }
