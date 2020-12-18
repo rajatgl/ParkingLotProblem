@@ -29,6 +29,7 @@ object ParkingLotSystemDriver extends App {
       val choice: Int = scala.io.StdIn.readInt()
       choice match {
         case 1 =>
+          //Enter the required details to park
           print("Enter the name of the parking attendant: ")
           val driver = new ParkingAttendant(scala.io.StdIn.readLine())
           print("Enter the color of the vehicle: ")
@@ -37,13 +38,24 @@ object ParkingLotSystemDriver extends App {
           val make = scala.io.StdIn.readLine().trim
           println("Is the vehicle large? Press Y for yes, anything else for no.")
           val isLarge = (scala.io.StdIn.readChar() == 'Y')
+          var runningInner: Boolean = true
+          var numberPlate = ""
+          while (runningInner) {
+            print("Enter the number plate of the vehicle: ")
+            numberPlate = scala.io.StdIn.readLine().toUpperCase()
+            if (numberPlate != "") {
+              runningInner = false
+            } else {
+              println("Invalid Input")
+            }
+          }
 
           println("Are you handicap? Press Y for yes, anything else for no.")
           if (scala.io.StdIn.readChar() == 'Y') {
-            driver.setVehicle(color, make, isHandicap = true, isLarge = isLarge)
+            driver.setVehicle(color, make, numberPlate, isHandicap = true, isLarge = isLarge)
             ParkingLotManager.handicappedPark(driver)
           } else {
-            driver.setVehicle(color, make, isLarge = isLarge)
+            driver.setVehicle(color, make, numberPlate, isLarge = isLarge)
             ParkingLotManager.park(driver)
           }
 

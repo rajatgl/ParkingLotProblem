@@ -14,16 +14,22 @@ import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, Par
  */
 class ParkingLot extends Subject {
 
-  var parkingLotSize: Int = 100
+  var parkingLotSize: Int = 3
   var parkingLot: Array[Driver] = Array.ofDim[Driver](parkingLotSize)
   private var currentlyParked: Int = 0
   private val observers = new util.ArrayList[Observer]
   var index: Int = 0
 
+  /**
+   * Calls for initialization of the parkingLot array
+   */
   def ParkingLot(): Unit = {
     init
   }
 
+  /**
+   * Initializes the ParkingLot Array elements to null
+   */
   def init: Unit = {
     for (index <- 0 to parkingLotSize)
       parkingLot(index) = null
@@ -75,6 +81,10 @@ class ParkingLot extends Subject {
     }
   }
 
+  /**
+   *
+   * @return the ParkingSpot number of nearest available Parking Spot
+   */
   def nearestFreeParkingSpot(): Int = {
     for (driverIndex <- 0 until parkingLotSize) {
       if (parkingLot(driverIndex) == null)
@@ -83,6 +93,11 @@ class ParkingLot extends Subject {
     parkingLotSize
   }
 
+  /**
+   *
+   * @param parkingSpot number of the vehicle to be departed from the Lot
+   * @return true if successfully departed else false
+   */
   def depart(parkingSpot: Int): Boolean = {
     if (parkingLot(parkingSpot) == null) {
       return false
@@ -99,6 +114,11 @@ class ParkingLot extends Subject {
     false
   }
 
+  /**
+   *
+   * @param numberPlate of the vehicle to be departed from the Lot
+   * @return true if successfully departed else false
+   */
   def depart(numberPlate: String): Boolean = {
     for (driverIndex <- 0 until parkingLotSize) {
       if (parkingLot(driverIndex) != null && parkingLot(driverIndex).vehicle.getNumberPlate().equals(numberPlate)) {
@@ -111,6 +131,10 @@ class ParkingLot extends Subject {
     false
   }
 
+  /**
+   * To check if the Lot is full or not
+   * @return true if Lot is full
+   */
   def isFull: Boolean = {
     if (currentlyParked == parkingLotSize) {
       notifyUpdate(new Message("Parking lot is full. Put the sign."), classOf[ParkingLotOwner.type].toString)
@@ -121,6 +145,10 @@ class ParkingLot extends Subject {
       false
   }
 
+  /**
+   *
+   * @return the ArrayList of parking spot numbers occupied in Lot
+   */
   def getAllCars(): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
     for (driverIndex <- 0 until parkingLotSize) {
@@ -131,6 +159,11 @@ class ParkingLot extends Subject {
     list
   }
 
+  /**
+   *
+   * @param color of the vehicle to fetch details
+   * @return the ArrayList of parking spot numbers occupied in Lot
+   */
   def getAllCars(color: String): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
     for (driverIndex <- 0 until parkingLotSize) {
@@ -141,6 +174,11 @@ class ParkingLot extends Subject {
     list
   }
 
+  /**
+   *
+   * @param seconds time limit in seconds for testing
+   * @return the ArrayList of parking spot numbers occupied in Lot
+   */
   def getAllCars(seconds: Int): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
     for (driverIndex <- 0 until parkingLotSize) {
@@ -151,6 +189,12 @@ class ParkingLot extends Subject {
     list
   }
 
+  /**
+   *
+   * @param color of vehicle to fetch details
+   * @param make of vehicles to fetch details
+   * @return the ArrayList of parking spot numbers occupied in Lot
+   */
   def getAllCars(color: String, make: String): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
     for (driverIndex <- 0 until parkingLotSize) {
@@ -161,6 +205,11 @@ class ParkingLot extends Subject {
     list
   }
 
+  /**
+   *
+   * @param make of vehicle to fetch details
+   * @return the ArrayList of parking spot numbers occupied in Lot
+   */
   def getAllCarsWithMake(make: String): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
     for (driverIndex <- 0 until parkingLotSize) {
@@ -171,6 +220,11 @@ class ParkingLot extends Subject {
     list
   }
 
+  /**
+   *
+   * @param isLarge to check if vehicle is large or not
+   * @return the ArrayList of parking spot numbers occupied in Lot
+   */
   def getAllHandicapCars(isLarge: Boolean = false): util.ArrayList[Int] = {
     val list: util.ArrayList[Int] = new util.ArrayList[Int]()
     for (driverIndex <- 0 until parkingLotSize) {
@@ -180,7 +234,7 @@ class ParkingLot extends Subject {
     }
     list
   }
-
+// overided functions of Subject
   override def attach(observer: Observer): Unit = {
     observers.add(observer)
   }

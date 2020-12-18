@@ -9,25 +9,30 @@ class Driver(name: String) extends Observer {
 
   var vehicle: Vehicle = null
 
+  /**
+   *
+   * @return the Name of the driver
+   */
   def getName(): String = {
     name
   }
 
-  def setVehicle(color: String, make:String, isHandicap: Boolean = false, isLarge: Boolean = false): Unit = {
-    var running: Boolean = true
-    while (running) {
-      print("Enter the number plate of the vehicle: ")
-      val numberPlate = scala.io.StdIn.readLine().toUpperCase()
-      if (numberPlate != "") {
-        vehicle = new Vehicle(numberPlate, new Date().getTime, isLarge, color, make, isHandicap)
-        running = false
-      } else {
-        println("Invalid Input")
-        running = true
-      }
-    }
+  /**
+   *
+   * @param color of the vehicle
+   * @param make of the vehicle
+   * @param isHandicap to check if the driver is handicap
+   * @param isLarge to check if the vehicle is large
+   */
+  def setVehicle(color: String, make:String, numberPlate: String, isHandicap: Boolean = false, isLarge: Boolean = false): Unit = {
+
+    vehicle = new Vehicle(numberPlate, new Date().getTime, isLarge, color, make, isHandicap)
   }
 
+  /**
+   *
+   * @param message to updated the driver regarding parking status.
+   */
   override def update(message: Message): Unit = {
     println("Driver with vehicle " + vehicle.getNumberPlate() + ": " + message.getMessageContent)
   }

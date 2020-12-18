@@ -11,8 +11,12 @@ import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, Par
  * Author: Rajat G.L.
  */
 object ParkingLotManager {
+  //ArrayList of Parking Lot
   val parkingLots = new util.ArrayList[ParkingLot]
 
+  /**
+   * To attach the observers and add the respective Parking Lot array into the List
+   */
   def addParkingLot(): Unit = {
     val parkingLot = new ParkingLot
     parkingLot.index = parkingLots.size()
@@ -22,12 +26,20 @@ object ParkingLotManager {
     parkingLots.add(parkingLot)
   }
 
+  /**
+   *
+   * @param count of Parking Lots owned by the Owner Observer
+   */
   def addParkingLot(count: Int): Unit = {
     for (_ <- 0 until count) {
       addParkingLot()
     }
   }
 
+  /**
+   * To evenly park the vehicles into available Parking Lots
+   * @param driver is the Driver object associated with the vehicle to be parked
+   */
   def park(driver: Driver): Unit = {
     var minOccupancy = parkingLots.get(0).getCurrentlyParked
     var parkingLotIndex: Int = 0
@@ -43,6 +55,10 @@ object ParkingLotManager {
     parkingLots.get(parkingLotIndex).attach(driver)
   }
 
+  /**
+   * to park the vehicle at nearest free space for the handicap drivers
+   * @param driver Driver object associated with the vehicle
+   */
   def handicappedPark(driver: Driver): Unit = {
     var minOccupancy = parkingLots.get(0).nearestFreeParkingSpot()
     var parkingLotIndex: Int = 0
@@ -58,10 +74,19 @@ object ParkingLotManager {
     parkingLots.get(parkingLotIndex).attach(driver)
   }
 
+  /**
+   * To Depart the already parked vehicle
+   * @param numberPlate unique id for the vehicle
+   * @param parkingLotIndex is the ParkingLot number where the vehicle is parked
+   */
   def depart(numberPlate: String, parkingLotIndex: Int): Unit = {
     parkingLots.get(parkingLotIndex).depart(numberPlate)
   }
 
+  /**
+   * To fetch the parking locations of the vehicles of required "color" and updated it to Police Dept
+   * @param color of the vehicle to be investigated by Police Dept
+   */
   def getAllCars(color: String): Unit = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
@@ -83,6 +108,9 @@ object ParkingLotManager {
     PoliceDepartment.update(new Message(message))
   }
 
+  /**
+   * to update the details of all cars parked in the Lots to Police Dept
+   */
   def getAllCars(): Unit = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
@@ -92,6 +120,11 @@ object ParkingLotManager {
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
   }
 
+  /**
+   * to update the details of all cars of required color and make to Police Dept
+   * @param color of the vehicle
+   * @param make of the vehicle
+   */
   def getAllCars(color: String, make: String): Unit = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
@@ -101,6 +134,10 @@ object ParkingLotManager {
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
   }
 
+  /**
+   * to update the details of the vehicles parked recently to Police Dept
+   * @param seconds time limit to check for recently parked cars
+   */
   def getAllCars(seconds: Int): Unit = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
@@ -110,6 +147,10 @@ object ParkingLotManager {
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
   }
 
+  /**
+   * to update the details of vehicles of particular make to Police Dept
+   * @param make of the vehicle
+   */
   def getAllCarsWithMake(make: String): Unit = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
@@ -119,6 +160,10 @@ object ParkingLotManager {
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
   }
 
+  /**
+   * To update the details of all Handicap vehicles to Police Dept
+   * @param isLarge checks of the vehicle is Large or Small
+   */
   def getAllHandicapCars(isLarge: Boolean): Unit = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
@@ -128,6 +173,11 @@ object ParkingLotManager {
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
   }
 
+  /**
+   * Formats the details of vehicles parked in Lots into readable format
+   * @param listOfList of ParkingLots
+   * @return
+   */
   def getParkingAllotment(listOfList: util.ArrayList[util.ArrayList[Int]]): String = {
 
     var message = ""
