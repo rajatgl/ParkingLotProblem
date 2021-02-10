@@ -1,8 +1,11 @@
 package com.bridgelabz.parkinglottest
 
+import java.io.{ByteArrayOutputStream, StringReader}
+
 import com.bridgelabz.parkinglotsolution.observers.{Driver, ParkingAttendant}
 import com.bridgelabz.parkinglotsolution.{ParkingLot, ParkingLotManager, Vehicle}
 import org.scalatest.FunSuite
+
 
 class ParkingLotTest extends FunSuite {
   //UC1
@@ -54,7 +57,7 @@ class ParkingLotTest extends FunSuite {
     driver1.setVehicle("blue", "bmw", "KA")
     assert(!parkingLot.park(driver1))
   }
-    //UC7
+  //UC7
   test("givenVehicleIfFoundShouldReturnTrue") {
     val parkingLot = new ParkingLot
     parkingLot.parkingLotSize = 1
@@ -90,7 +93,7 @@ class ParkingLotTest extends FunSuite {
     parkingLot.park(driver)
     assert(!parkingLot.getAllCars("white").isEmpty)
   }
-//UC13
+  //UC13
   test("givenBlueVehicleWithBrandToyotaShouldReturnLotWhereFound"){
     val parkingLot = new ParkingLot
     parkingLot.parkingLotSize = 1
@@ -134,5 +137,77 @@ class ParkingLotTest extends FunSuite {
     driver.setVehicle("blue", "bmw", "KA",true)
     parkingLot.park(driver)
     assert(!parkingLot.getAllCars().isEmpty)
+  }
+
+  //Additional Test Cases
+  test("givenParkingLotInitializationShouldReturnEmptyLot"){
+    val parkingLot = new ParkingLot()
+    assert(parkingLot.getCurrentlyParked == 0)
+  }
+
+  test("givenHandicapDriverShouldParkCloseBy"){
+    val parkingLot = new ParkingLot()
+    val driver = new ParkingAttendant("Rajat")
+    driver.setVehicle("blue", "lexus", "MH", true)
+    val inputStr =
+      """|1
+      """.stripMargin
+    val in = new StringReader(inputStr)
+    val out = new ByteArrayOutputStream()
+    Console.withOut(out) {
+      Console.withIn(in) {
+        parkingLot.park(driver)
+      }
+    }
+
+    assert(parkingLot.getCurrentlyParked != 0)
+  }
+
+  test("givenHandicapDriverAndWrongOwnerChoiceShouldParkCloseBy"){
+    val parkingLot = new ParkingLot()
+    val driver = new ParkingAttendant("Rajat")
+    driver.setVehicle("blue", "lexus", "MH", true)
+    val inputStr =
+      """|-1
+         |0
+      """.stripMargin
+    val in = new StringReader(inputStr)
+    val out = new ByteArrayOutputStream()
+    Console.withOut(out) {
+      Console.withIn(in) {
+        parkingLot.park(driver)
+      }
+    }
+
+    assert(parkingLot.getCurrentlyParked != 0)
+  }
+
+  test("givenEmptyParkingLotShouldReturnNearestParkingSpotAsZero"){
+    val parkingLot = new ParkingLot()
+    assert(parkingLot.nearestFreeParkingSpot() == 0)
+  }
+
+  test("givenFullParkingLotShouldReturnNearestParkingSpotAsParkingLotSize"){
+    val parkingLot = new ParkingLot()
+    parkingLot.parkingLotSize = 0
+    assert(parkingLot.nearestFreeParkingSpot() == 0)
+  }
+
+  test("givenValidNumberPlateAllowDriverToDepart"){
+    val parkingLot = new ParkingLot()
+    val driver = new Driver("Rajat")
+    driver.setVehicle("blue", "lexus", "MH")
+    parkingLot.park(driver)
+
+    assert(parkingLot.depart("MH"))
+  }
+
+  test("givenInvalidNumberPlateDenyDriverToDepart"){
+    val parkingLot = new ParkingLot()
+    val driver = new Driver("Rajat")
+    driver.setVehicle("blue", "lexus", "MH")
+    parkingLot.park(driver)
+
+    assert(!parkingLot.depart("KA"))
   }
 }

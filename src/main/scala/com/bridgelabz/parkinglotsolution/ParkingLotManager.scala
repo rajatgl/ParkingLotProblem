@@ -2,7 +2,7 @@ package com.bridgelabz.parkinglotsolution
 
 import java.util
 
-import com.bridgelabz.parkinglotsolution.design.{Message, Observer, Subject}
+import com.bridgelabz.parkinglotsolution.design.Message
 import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingLotOwner, PoliceDepartment}
 
 /**
@@ -12,7 +12,7 @@ import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, Par
  */
 object ParkingLotManager {
   //ArrayList of Parking Lot
-  val parkingLots = new util.ArrayList[ParkingLot]
+  var parkingLots = new util.ArrayList[ParkingLot]
 
   /**
    * To attach the observers and add the respective Parking Lot array into the List
@@ -40,7 +40,7 @@ object ParkingLotManager {
    * To evenly park the vehicles into available Parking Lots
    * @param driver is the Driver object associated with the vehicle to be parked
    */
-  def park(driver: Driver): Unit = {
+  def park(driver: Driver): Int = {
     var minOccupancy = parkingLots.get(0).getCurrentlyParked
     var parkingLotIndex: Int = 0
     for (parkingLotsIndex <- 0 until parkingLots.size()) {
@@ -53,6 +53,8 @@ object ParkingLotManager {
     }
     parkingLots.get(parkingLotIndex).park(driver)
     parkingLots.get(parkingLotIndex).attach(driver)
+
+    parkingLotIndex
   }
 
   /**
@@ -79,7 +81,7 @@ object ParkingLotManager {
    * @param numberPlate unique id for the vehicle
    * @param parkingLotIndex is the ParkingLot number where the vehicle is parked
    */
-  def depart(numberPlate: String, parkingLotIndex: Int): Unit = {
+  def depart(numberPlate: String, parkingLotIndex: Int): Boolean = {
     parkingLots.get(parkingLotIndex).depart(numberPlate)
   }
 
@@ -87,37 +89,27 @@ object ParkingLotManager {
    * To fetch the parking locations of the vehicles of required "color" and updated it to Police Dept
    * @param color of the vehicle to be investigated by Police Dept
    */
-  def getAllCars(color: String): Unit = {
+  def getAllCars(color: String): util.ArrayList[util.ArrayList[Int]] = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
       listOfList.add(parkingLots.get(parkingLotIndex).getAllCars(color))
     }
 
-    var message: String = ""
-    for (parkingLotNumber <- 0 until listOfList.size()) {
-      message += "Parking Lot Number: " + parkingLotNumber + ": {"
-      for (parkingLotSpot <- 0 until listOfList.get(parkingLotNumber).size()) {
-        if (parkingLotSpot != listOfList.get(parkingLotNumber).size() - 1)
-          message += parkingLotSpot + ", "
-        else
-          message += parkingLotSpot
-      }
-      message += "}, "
-    }
-    message = message.substring(0, message.length - 2)
-    PoliceDepartment.update(new Message(message))
+    PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+    listOfList
   }
 
   /**
    * to update the details of all cars parked in the Lots to Police Dept
    */
-  def getAllCars(): Unit = {
+  def getAllCars(): util.ArrayList[util.ArrayList[Int]] = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
       listOfList.add(parkingLots.get(parkingLotIndex).getAllCars())
     }
 
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+    listOfList
   }
 
   /**
@@ -125,52 +117,56 @@ object ParkingLotManager {
    * @param color of the vehicle
    * @param make of the vehicle
    */
-  def getAllCars(color: String, make: String): Unit = {
+  def getAllCars(color: String, make: String): util.ArrayList[util.ArrayList[Int]] = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
       listOfList.add(parkingLots.get(parkingLotIndex).getAllCars(color, make))
     }
 
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+    listOfList
   }
 
   /**
    * to update the details of the vehicles parked recently to Police Dept
    * @param seconds time limit to check for recently parked cars
    */
-  def getAllCars(seconds: Int): Unit = {
+  def getAllCars(seconds: Int): util.ArrayList[util.ArrayList[Int]] = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
       listOfList.add(parkingLots.get(parkingLotIndex).getAllCars(seconds))
     }
 
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+    listOfList
   }
 
   /**
    * to update the details of vehicles of particular make to Police Dept
    * @param make of the vehicle
    */
-  def getAllCarsWithMake(make: String): Unit = {
+  def getAllCarsWithMake(make: String): util.ArrayList[util.ArrayList[Int]] = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
       listOfList.add(parkingLots.get(parkingLotIndex).getAllCarsWithMake(make))
     }
 
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+    listOfList
   }
 
   /**
    * To update the details of all Handicap vehicles to Police Dept
    * @param isLarge checks of the vehicle is Large or Small
    */
-  def getAllHandicapCars(isLarge: Boolean): Unit = {
+  def getAllHandicapCars(isLarge: Boolean): util.ArrayList[util.ArrayList[Int]] = {
     val listOfList: util.ArrayList[util.ArrayList[Int]] = new util.ArrayList[util.ArrayList[Int]]()
     for (parkingLotIndex <- 0 until parkingLots.size()) {
       listOfList.add(parkingLots.get(parkingLotIndex).getAllHandicapCars(isLarge))
     }
 
     PoliceDepartment.update(new Message(getParkingAllotment(listOfList)))
+    listOfList
   }
 
   /**
@@ -190,10 +186,11 @@ object ParkingLotManager {
         message += "\n\t\tPA Name: " + driver.getName() + ", "
         message += "\n\t\tLocation: " + parkingLotSpot
 
-        if (parkingLotSpot != listOfList.get(parkingLotNumber).size() - 1)
+        if (parkingLotSpot != listOfList.get(parkingLotNumber).size() - 1) {
           message += "\n\t},\n"
-        else
+        } else {
           message += "}\n"
+        }
       }
       message += "},\n"
     }

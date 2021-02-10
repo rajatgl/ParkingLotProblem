@@ -1,16 +1,25 @@
 package com.bridgelabz.parkinglotsolution
 
 import com.bridgelabz.parkinglotsolution.observers.{AirportPersonal, Driver, ParkingAttendant, ParkingLotOwner}
+import com.typesafe.scalalogging.Logger
 
 /**
  * Created on 12/9/2020.
  * Class: RealWorld.scala
  * Author: Rajat G.L.
  */
+
+// Driver class: does not need checks
+// $COVERAGE-OFF$
+// scalastyle:off
+
 object ParkingLotSystemDriver extends App {
 
   var running: Boolean = true
+  private val logger = Logger("ParkingLotSystemDriver")
+
   println("Hey Sanjay! How many parking lots do you own?")
+
   var errorLess: Boolean = false
   while (!errorLess) {
     try {
@@ -18,14 +27,27 @@ object ParkingLotSystemDriver extends App {
       errorLess = true
     }
     catch {
-      case _: Exception =>
+      case e: Exception =>
+        logger.error(e.getMessage)
         println("Hey Sanjay! We hit an error. How many parking lots do you own?")
     }
   }
 
   while (running) {
     try {
-      println("Welcome to Real World Parking Lot. Enter:\n1. to Park\n2. to UnPark\n3. to get positions of all White Cars\n4. to get details of all Blue Toyotas\n5. to get details of all BMWs\n6. to get details of all cars parking within 30 seconds\n7. to get details of all handicap small cars\n8. to get details of all cars\n9. to Quit")
+      println(
+        """Welcome to Real World Parking Lot.
+          |Enter:
+          |1. to Park
+          |2. to UnPark
+          |3. to get positions of all White Cars
+          |4. to get details of all Blue Toyotas
+          |5. to get details of all BMWs
+          |6. to get details of all cars parking within 30 seconds
+          |7. to get details of all handicap small cars
+          |8. to get details of all cars
+          |9. to Quit""".stripMargin)
+
       val choice: Int = scala.io.StdIn.readInt()
       choice match {
         case 1 =>
@@ -92,7 +114,9 @@ object ParkingLotSystemDriver extends App {
       }
     }
     catch {
-      case e: NumberFormatException => println("Invalid Input")
+      case e: NumberFormatException =>
+        logger.error(e.getMessage)
+        println("Invalid Input")
     }
   }
 }
